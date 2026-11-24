@@ -1,0 +1,4 @@
+# raw photos stay local; only the brightness grid in index.html is published
+*.jpg
+*.jpeg
+*.png
