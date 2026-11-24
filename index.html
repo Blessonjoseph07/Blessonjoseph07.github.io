@@ -82,11 +82,12 @@
 
   /* about: words light up as you scroll */
   .about p{font:400 clamp(26px,3.2vw,44px)/1.25 var(--serif);max-width:980px}
-  .about-grid{display:grid;grid-template-columns:1.3fr .7fr;gap:64px;align-items:center}
-  .portrait{margin:0}
-  .portrait canvas{display:block;width:100%;aspect-ratio:120/128;cursor:crosshair;border:1px solid var(--line);background:var(--bg)}
-  .portrait figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:12px}
-  @media (max-width:860px){.about-grid{grid-template-columns:1fr;gap:40px}.portrait{max-width:380px}}
+  /* sensed portrait, floating in the hero to the right of the name */
+  .portrait{position:absolute;right:7vw;bottom:8vh;width:clamp(260px,30vw,480px);margin:0;z-index:1}
+  .portrait canvas{display:block;width:100%;aspect-ratio:120/128;cursor:crosshair}
+  .portrait figcaption{display:flex;justify-content:space-between;gap:12px;margin-top:6px;padding-top:10px;border-top:1px solid var(--line)}
+  @media (max-width:1100px){.portrait{width:30vw;bottom:auto;top:18vh}}
+  @media (max-width:860px){.portrait{width:50vw;right:4vw;top:200px}.portrait figcaption{display:none}}
   .about .w{opacity:.16;transition:opacity .3s,color .3s}
   .about .w.lit{opacity:1}
   .about .w.hl.lit{color:var(--sig);font-style:italic}
@@ -264,6 +265,11 @@
     </div>
   </div>
 
+  <figure class="portrait">
+    <canvas id="face" role="img" aria-label="Portrait of Blesson drawn from glitching signal lines"></canvas>
+    <figcaption class="mono"><span>Fig. 01 — subject, sensed</span><span id="faceState">no camera used</span></figcaption>
+  </figure>
+
   <div class="hero-copy"><div class="wrap">
     <h1 aria-label="Blesson Joseph Byju"><span class="scr">Blesson</span><br><span class="scr">Joseph</span> <em class="scr">Byju</em></h1>
     <p class="lede">Developer who builds systems that sense the physical world, run in containers, and say honestly what they can and can't do.</p>
@@ -277,13 +283,7 @@
 
 <section class="about" id="about"><div class="wrap">
   <div class="head"><span class="mono">01 / About</span><span></span></div>
-  <div class="about-grid">
-    <p id="fill">I'm an MCA student at Amal Jyothi College of Engineering. I like the space where <span class="hl">hardware, data and the web</span> meet — flashing firmware onto an ESP32 in the morning, training a model after lunch, and shipping the dashboard by night. I care about tests, clean deploys, and <span class="hl">numbers I can defend.</span></p>
-    <figure class="portrait">
-      <canvas id="face" role="img" aria-label="Portrait of Blesson drawn from glitching signal lines"></canvas>
-      <figcaption class="mono"><span>Fig. 01 — subject, sensed</span><span id="faceState">no camera used</span></figcaption>
-    </figure>
-  </div>
+  <p id="fill">I'm an MCA student at Amal Jyothi College of Engineering. I like the space where <span class="hl">hardware, data and the web</span> meet — flashing firmware onto an ESP32 in the morning, training a model after lunch, and shipping the dashboard by night. I care about tests, clean deploys, and <span class="hl">numbers I can defend.</span></p>
 </div></section>
 
 <section id="work"><div class="wrap">
@@ -627,7 +627,7 @@ const FACE = 'CQ4REA4MCgsNDw4LCQsNEx4hGBgYGiI0SDkTHEZiY1pCQ0xCRzs4IyVlaG1ZQklCQy
       pass('rgba(0,230,255,.55)', 5, slices);
       g.globalCompositeOperation = 'source-over';
     }
-    pass(`rgba(${C.ink},.95)`, 0, slices, `rgba(${C.ink},.16)`);
+    pass(`rgba(${C.ink},.95)`, 0, slices, null); // only lit lines: the face floats over the hero signal
     stateEl.textContent = decode < 1 ? 'decoding…' : glitch > 0 ? 'signal unstable' : fmx > -1e3 ? 'presence: you' : 'no camera used';
     if (running && !reduce) requestAnimationFrame(draw);
   }
