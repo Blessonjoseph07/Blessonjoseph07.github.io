@@ -8,11 +8,10 @@
 <script>try{ if (localStorage.theme) document.documentElement.dataset.theme = localStorage.theme }catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Doto:wght@600..900&family=JetBrains+Mono:wght@400;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     --serif:"Instrument Serif",Georgia,serif;
-    --dot:"Doto","JetBrains Mono",ui-monospace,monospace;
     --mono:"JetBrains Mono",ui-monospace,monospace;
     --sans:"Inter Tight",system-ui,sans-serif;
   }
@@ -206,15 +205,6 @@
   .logos + .giant{margin-top:60px}
   .giant{font:400 22.5vw/.8 var(--serif);letter-spacing:-.04em;white-space:nowrap;margin:110px 0 0 -1vw;color:transparent;-webkit-text-stroke:1px var(--mute);transition:color .6s,-webkit-text-stroke-color .6s;user-select:none}
   .giant:hover{color:var(--sig);-webkit-text-stroke-color:var(--sig)}
-
-  /* dot-matrix headlines (Doto), overriding the serif headings above */
-  .hero h1,.head h2,.proj h3,.proj .idx,.contact h2,.giant{font-family:var(--dot);font-weight:800;font-style:normal;letter-spacing:-.03em}
-  .hero h1{font-size:clamp(46px,8.2vw,148px);line-height:.95}
-  .hero h1 em,.head h2 em,.contact h2 a{font-style:normal}
-  .head h2{font-size:clamp(34px,5vw,68px)}
-  .contact h2{font-size:clamp(44px,8vw,124px)}
-  .giant{font-size:18.5vw;color:var(--line);-webkit-text-stroke:0;letter-spacing:-.05em}
-  .giant:hover{color:var(--sig)}
   footer{display:flex;justify-content:space-between;padding:28px 0 40px;border-top:1px solid var(--line)}
 
   /* film grain */
