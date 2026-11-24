@@ -161,9 +161,31 @@
   .badge span{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:var(--sig);transition:transform .3s}
   .badge:hover span{transform:rotate(45deg)}
   @keyframes spin{to{transform:rotate(360deg)}}
-  .socials{display:flex;flex-wrap:wrap;gap:12px;margin-top:56px}
-  .socials a{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;padding:12px 20px;border:1px solid var(--line);border-radius:99px;transition:background .2s,color .2s,border-color .2s}
-  .socials a:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  /* let's connect: one card per platform */
+  .connect{margin-top:72px}
+  .connect-head{margin-bottom:18px}
+  .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .card-box{position:relative;display:grid}
+  .card{position:relative;display:flex;flex-direction:column;gap:6px;padding:26px 24px 22px;border:1px solid var(--line);border-radius:18px;
+    text-decoration:none;background:var(--bg);overflow:hidden;min-height:230px;transition:transform .3s,border-color .3s}
+  .card::before{content:"";position:absolute;inset:auto -20% -60% -20%;height:120%;background:radial-gradient(closest-side,rgba(var(--sig-rgb),.18),transparent);
+    transform:translateY(40%);opacity:0;transition:opacity .4s,transform .5s}
+  .card:hover{transform:translateY(-6px);border-color:var(--sig)}
+  .card:hover::before{opacity:1;transform:none}
+  .card > *{position:relative}
+  .card .ch{font:12px var(--mono);color:var(--mute);position:absolute;top:22px;right:24px}
+  .card img,.card .at{width:40px;height:40px;margin-bottom:18px}
+  .card .at{display:grid;place-items:center;border-radius:10px;background:var(--sig);color:var(--on-sig);font:600 22px var(--mono)}
+  [data-theme=dark] .card img.mono-ico{filter:invert(1)}
+  .card h4{font:400 34px/1 var(--serif)}
+  .card .handle{font:13px var(--mono);color:var(--mute);overflow-wrap:anywhere}
+  .card .go{margin-top:auto;padding-top:22px;font:600 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sig)}
+  .card .go i{font-style:normal;display:inline-block;transition:transform .3s}
+  .card:hover .go i{transform:translateX(6px)}
+  .copy{position:absolute;right:20px;bottom:18px;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink);
+    background:var(--panel);border:1px solid var(--line);border-radius:99px;padding:6px 12px;cursor:pointer}
+  .copy:hover{border-color:var(--sig)}
+  .copy:focus-visible{outline:2px solid var(--sig);outline-offset:2px}
   /* skill logos running along the bottom */
   .logos{overflow:hidden;white-space:nowrap;margin-top:100px;padding:18px 0;border-block:1px solid var(--line);
     mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
@@ -193,6 +215,8 @@
     nav .links,nav .clock{display:none}
     .head,.proj,.edu{grid-template-columns:1fr;gap:12px}
     .proj .idx{font-size:56px}
+    .cards{grid-template-columns:1fr}
+    .card{min-height:0}
     .row{grid-template-columns:1fr 24px;gap:6px 16px}
     .row p,.row .mono{grid-column:1}
     .row i{grid-row:1;grid-column:2}
@@ -339,9 +363,31 @@
       <span aria-hidden="true">↗</span>
     </a>
   </div>
-  <div class="socials">
-    <a href="https://github.com/Blessonjoseph07" target="_blank" rel="noopener">GitHub ↗</a>
-    <a href="https://www.linkedin.com/in/blesson-joseph-byju07/" target="_blank" rel="noopener">LinkedIn ↗</a>
+  <div class="connect">
+    <div class="mono connect-head">Let's connect — pick a channel</div>
+    <div class="cards">
+      <a class="card" href="https://www.linkedin.com/in/blesson-joseph-byju07/" target="_blank" rel="noopener">
+        <span class="ch">01</span>
+        <img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/linkedin/linkedin-original.svg" alt="">
+        <h4>LinkedIn</h4><span class="handle">/in/blesson-joseph-byju07</span>
+        <span class="go">Let's connect <i>→</i></span>
+      </a>
+      <a class="card" href="https://github.com/Blessonjoseph07" target="_blank" rel="noopener">
+        <span class="ch">02</span>
+        <img class="mono-ico" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/github/github-original.svg" alt="">
+        <h4>GitHub</h4><span class="handle">@Blessonjoseph07</span>
+        <span class="go">See my code <i>→</i></span>
+      </a>
+      <div class="card-box">
+        <a class="card" href="mailto:blessonjosephbyju93@gmail.com">
+          <span class="ch">03</span>
+          <span class="at" aria-hidden="true">@</span>
+          <h4>Email</h4><span class="handle">blessonjosephbyju93@gmail.com</span>
+          <span class="go">Write to me <i>→</i></span>
+        </a>
+        <button class="copy" type="button" data-copy="blessonjosephbyju93@gmail.com">Copy</button>
+      </div>
+    </div>
   </div>
 </div>
   <div class="logos" aria-label="Skills"><div id="logos"></div></div>
@@ -447,6 +493,13 @@ document.addEventListener('visibilitychange', () => { document.title = document.
 // a hello for anyone who opens dev tools
 console.log('%cPresence detected in the console 👀', 'font:600 16px monospace;color:#c8ff4d;background:#0b0c0a;padding:8px 12px');
 console.log('Curious how this works? It\'s one hand-written HTML file. Let\'s talk → https://www.linkedin.com/in/blesson-joseph-byju07/');
+
+// ---------- copy email ----------
+document.querySelectorAll('.copy').forEach(b => b.addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText(b.dataset.copy); b.textContent = 'Copied ✓'; }
+  catch { b.textContent = 'Copy failed'; }
+  setTimeout(() => b.textContent = 'Copy', 1800);
+}));
 
 // ---------- local clock ----------
 const clock = document.getElementById('clock');
