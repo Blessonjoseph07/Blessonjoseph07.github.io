@@ -1,0 +1,599 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blesson Joseph Byju — Developer</title>
+<meta name="description" content="Blesson Joseph Byju — MCA student building full-stack, cloud and sensing systems.">
+<script>try{ if (localStorage.theme) document.documentElement.dataset.theme = localStorage.theme }catch(e){}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;600&family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --serif:"Instrument Serif",Georgia,serif;
+    --mono:"JetBrains Mono",ui-monospace,monospace;
+    --sans:"Inter Tight",system-ui,sans-serif;
+  }
+  /* lamp off */
+  [data-theme=dark]{
+    --bg:#0b0c0a; --panel:#121410; --line:#23261f;
+    --ink:#ecebe3; --soft:#c9c8bf; --mute:#8b8d82; --sig:#c8ff4d; --warm:#ff8a3d;
+    --ink-rgb:236,235,227; --sig-rgb:200,255,77; --on-sig:#0b0c0a;
+  }
+  /* lamp on */
+  [data-theme=light]{
+    --bg:#f4efe3; --panel:#ece5d5; --line:#dcd3bf;
+    --ink:#191a15; --soft:#3b3a33; --mute:#706b5d; --sig:#d4490f; --warm:#b5520b;
+    --ink-rgb:25,26,21; --sig-rgb:212,73,15; --on-sig:#f4efe3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth;background:var(--bg)}
+  body{background:var(--bg);color:var(--ink);font:400 17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+  a{color:inherit}
+  ::selection{background:var(--sig);color:var(--on-sig)}
+  .wrap{max-width:1180px;margin:0 auto;padding:0 28px}
+  .mono{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+  ::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+
+  /* nav */
+  nav{position:fixed;inset:0 0 auto;z-index:10;mix-blend-mode:difference}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+  nav a,nav .clock{text-decoration:none;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#fff}
+  nav .clock{opacity:.6}
+  nav .links a{margin-left:26px;opacity:.75}
+  nav .links a:hover{opacity:1}
+
+  /* ceiling pull-cord, always reachable */
+  .cord{position:fixed;top:0;right:max(14px,calc((100vw - 1180px)/2 - 34px));z-index:11;width:30px;height:170px;overflow:visible;transform-origin:50% 0}
+  @media (max-width:1260px){.cord{right:6px;top:52px}}
+
+  /* hero */
+  .hero{position:relative;height:100vh;min-height:680px;overflow:hidden;border-bottom:1px solid var(--line)}
+  #csi{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair}
+  .hero-copy{position:absolute;left:0;right:0;bottom:9vh;pointer-events:none}
+  .hero h1{font:400 clamp(56px,11vw,168px)/.88 var(--serif);letter-spacing:-.02em}
+  .hero h1 em{color:var(--sig)}
+  .hero p.lede{max-width:520px;margin-top:28px;font-size:19px;color:var(--soft)}
+  .hint{position:absolute;top:96px;left:28px;pointer-events:none}
+  /* presence readout in the hero: the page "senses" the visitor */
+  .hud{position:absolute;top:124px;left:28px;font-family:var(--mono);font-size:12px;line-height:2.2;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);pointer-events:none}
+  .hud div{display:flex;align-items:center;gap:10px}
+  .hud b{color:var(--sig);font-weight:600}
+  .hud .dot{width:7px;height:7px;border-radius:50%;background:var(--sig);animation:blip 1.6s ease-out infinite}
+  .hud.away .dot{animation:none;opacity:.35}
+  .hud.away b{color:var(--mute)}
+  .hud .bar{width:60px;height:5px;border:1px solid var(--line);display:inline-block;position:relative}
+  .hud .bar i{position:absolute;inset:0 auto 0 0;width:0;background:var(--sig);transition:width .15s}
+  @keyframes blip{0%{box-shadow:0 0 0 0 rgba(var(--sig-rgb),.7)}100%{box-shadow:0 0 0 9px rgba(var(--sig-rgb),0)}}
+
+  .pull line{stroke:var(--ink);stroke-width:3.5;stroke-dasharray:.1 6;stroke-linecap:round}
+  .pull .bead{fill:var(--sig);stroke:var(--ink);stroke-width:1.5;cursor:grab;touch-action:none}
+  .pull .bead:active{cursor:grabbing}
+  .pull .hit{fill:transparent;cursor:grab;touch-action:none}
+  .pull g:focus-visible{outline:none}
+  .pull g:focus-visible .bead{stroke:var(--sig);stroke-width:4}
+
+  /* sections */
+  section{padding:140px 0;border-bottom:1px solid var(--line)}
+  .head{display:grid;grid-template-columns:200px 1fr;gap:40px;margin-bottom:64px}
+  .head h2{font:400 clamp(40px,6vw,76px)/1 var(--serif);letter-spacing:-.01em}
+  .head h2 em{color:var(--sig)}
+
+  /* about: words light up as you scroll */
+  .about p{font:400 clamp(26px,3.2vw,44px)/1.25 var(--serif);max-width:980px}
+  .about .w{opacity:.16;transition:opacity .3s,color .3s}
+  .about .w.lit{opacity:1}
+  .about .w.hl.lit{color:var(--sig);font-style:italic}
+
+  /* marquee */
+  .marquee{overflow:hidden;border-bottom:1px solid var(--line);padding:22px 0;white-space:nowrap}
+  .marquee div{display:inline-block;animation:mq 38s linear infinite;font:400 italic 44px/1 var(--serif);color:var(--mute)}
+  .marquee span{margin:0 26px}
+  .marquee span:nth-child(3n){color:var(--sig)}
+  .marquee span::after{content:"✦";font-style:normal;font-size:18px;margin-left:52px;vertical-align:middle;color:var(--line)}
+  @keyframes mq{to{transform:translateX(-50%)}}
+
+  /* projects */
+  .proj{display:grid;grid-template-columns:200px 1fr;gap:40px;padding:56px 0;border-top:1px solid var(--line)}
+  .proj .idx{font:400 italic 96px/1 var(--serif);color:var(--sig);display:block;margin-top:14px}
+  .proj h3{font:400 clamp(36px,4.5vw,58px)/1 var(--serif);margin-bottom:6px}
+  .proj .sub{color:var(--mute);margin-bottom:26px}
+  .proj .body{max-width:760px}
+  .proj .body p{margin-bottom:16px;color:var(--soft)}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin:32px 0}
+  .stat{background:var(--bg);padding:20px 18px}
+  .stat b{display:block;font:400 40px/1 var(--serif);color:var(--sig);margin-bottom:8px}
+  .tags{display:flex;flex-wrap:wrap;gap:8px}
+  .tags span{font-family:var(--mono);font-size:12px;padding:5px 10px;border:1px solid var(--line);border-radius:99px;color:var(--soft);transition:background .2s,color .2s}
+  .tags span:hover{background:var(--sig);color:var(--on-sig);border-color:var(--sig)}
+  .note{border-left:2px solid var(--warm);padding:4px 0 4px 16px;margin:24px 0;color:var(--soft);font-size:15px}
+  .note .mono{color:var(--warm);display:block;margin-bottom:4px}
+  pre.arch{font:12px/1.5 var(--mono);color:var(--mute);background:var(--panel);border:1px solid var(--line);padding:20px;overflow:auto;margin:24px 0}
+  pre.arch i{color:var(--sig);font-style:normal}
+  .viz{display:block;width:100%;height:220px;background:var(--panel);border:1px solid var(--line);margin:8px 0 28px}
+  .tree{height:320px}
+  .tree .dot{fill:var(--line)}
+  .tree line{stroke:var(--line)}
+  .tree .done{fill:var(--sig);stroke:var(--sig)}
+  .tree .todo{fill:var(--panel);stroke:var(--sig)}
+  .tree .core{fill:var(--sig)}
+  .tree .ring{fill:none;stroke:var(--sig);opacity:.4}
+  .tree circle.done,.tree circle.todo{transition:r .3s}
+  .tree circle.done:hover,.tree circle.todo:hover{r:9}
+  .tree text{font:10px var(--mono);fill:var(--mute);letter-spacing:.06em}
+
+  .repo{display:inline-block;margin-top:24px;font:600 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--sig);text-decoration:none;border-bottom:1px solid currentColor;padding-bottom:2px}
+
+  /* other projects: a plain index list */
+  .more{margin-top:40px;border-top:1px solid var(--line)}
+  .more-head{display:flex;justify-content:space-between;padding:22px 0 10px}
+  .more-head a{text-decoration:none}
+  .more-head a:hover{color:var(--ink)}
+  .row{display:grid;grid-template-columns:240px 1fr 280px 24px;gap:24px;align-items:baseline;padding:20px 0;border-bottom:1px solid var(--line);text-decoration:none;transition:padding .25s,background .25s}
+  .row h4{font:400 26px/1.1 var(--serif)}
+  .row p{color:var(--soft);font-size:15px}
+  .row i{font-style:normal;color:var(--mute);transition:transform .25s,color .25s}
+  .row:hover{padding-left:14px;background:var(--panel)}
+  .row:hover h4{font-style:italic;color:var(--sig)}
+  .row:hover i{transform:translate(3px,-3px);color:var(--sig)}
+
+  /* stack */
+  .stack{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  .stack div{background:var(--bg);padding:28px 24px;min-height:220px;transition:background .25s,transform .2s ease-out}
+  .stack div:hover{background:var(--panel)}
+  .stack h4{font:400 28px/1 var(--serif);margin:14px 0 18px}
+  .stack ul{list-style:none;color:var(--soft);font-size:15px;line-height:2}
+
+  /* education */
+  .edu{display:grid;grid-template-columns:200px 1fr auto;gap:40px;align-items:baseline;padding:28px 0;border-top:1px solid var(--line)}
+  .edu h3{font:400 30px/1.1 var(--serif)}
+
+  /* contact */
+  .contact{padding:160px 0 0;border:0;overflow:hidden}
+  .contact-top{display:flex;justify-content:space-between;align-items:flex-end;gap:40px}
+  .contact h2{font:400 clamp(56px,10vw,150px)/.9 var(--serif);letter-spacing:-.02em}
+  .contact h2 a{text-decoration:none;color:var(--sig);font-style:italic;display:inline-block;transition:transform .2s ease-out}
+  .contact h2 a:hover{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:10px}
+  .badge{flex:none;width:150px;height:150px;position:relative;display:block;text-decoration:none}
+  .badge svg{width:100%;height:100%;animation:spin 18s linear infinite}
+  .badge text{font:600 11.5px var(--mono);letter-spacing:.34em;fill:var(--ink)}
+  .badge span{position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:var(--sig);transition:transform .3s}
+  .badge:hover span{transform:rotate(45deg)}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .socials{display:flex;flex-wrap:wrap;gap:12px;margin-top:56px}
+  .socials a{font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink);text-decoration:none;padding:12px 20px;border:1px solid var(--line);border-radius:99px;transition:background .2s,color .2s,border-color .2s}
+  .socials a:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+  /* skill logos running along the bottom */
+  .logos{overflow:hidden;white-space:nowrap;margin-top:100px;padding:18px 0;border-block:1px solid var(--line);
+    mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+  .logos > div{display:inline-block;animation:mq 45s linear infinite reverse}
+  .logos:hover > div{animation-play-state:paused}
+  .logos span{display:inline-flex;align-items:center;gap:12px;margin:0 10px;padding:10px 20px 10px 12px;border:1px solid var(--line);border-radius:99px;
+    font:600 13px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--soft);transition:transform .25s,border-color .25s,color .25s}
+  .logos span:hover{transform:translateY(-4px) rotate(-3deg);border-color:var(--sig);color:var(--ink)}
+  .logos img{width:30px;height:30px}
+  [data-theme=dark] .logos img.mono-ico{filter:invert(1)}
+  .logos + .giant{margin-top:60px}
+  .giant{font:400 22.5vw/.8 var(--serif);letter-spacing:-.04em;white-space:nowrap;margin:110px 0 0 -1vw;color:transparent;-webkit-text-stroke:1px var(--mute);transition:color .6s,-webkit-text-stroke-color .6s;user-select:none}
+  .giant:hover{color:var(--sig);-webkit-text-stroke-color:var(--sig)}
+  footer{display:flex;justify-content:space-between;padding:28px 0 40px;border-top:1px solid var(--line)}
+
+  /* film grain */
+  body::after{content:"";position:fixed;inset:-50%;z-index:50;pointer-events:none;opacity:.06;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    animation:grain 1s steps(6) infinite}
+  @keyframes grain{to{transform:translate(-8%,6%)}}
+
+  .reveal{opacity:0;transform:translateY(24px);transition:opacity .9s,transform .9s}
+  .reveal.in{opacity:1;transform:none}
+  a:focus-visible,#csi:focus-visible{outline:2px solid var(--sig);outline-offset:4px}
+
+  @media (max-width:860px){
+    nav .links,nav .clock{display:none}
+    .head,.proj,.edu{grid-template-columns:1fr;gap:12px}
+    .proj .idx{font-size:56px}
+    .row{grid-template-columns:1fr 24px;gap:6px 16px}
+    .row p,.row .mono{grid-column:1}
+    .row i{grid-row:1;grid-column:2}
+    .stats,.stack{grid-template-columns:1fr 1fr}
+    section{padding:96px 0}
+    .contact-top{flex-direction:column;align-items:flex-start}
+    .badge{width:110px;height:110px}
+  }
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1;transform:none;transition:none}
+    body::after,.marquee div,.badge svg,.logos > div,.hud .dot{animation:none}
+    .logos{overflow-x:auto}
+  }
+</style>
+</head>
+<body>
+
+<nav><div class="wrap">
+  <span class="clock" id="clock">Kerala · --:-- IST</span>
+  <div class="links"><a href="#about">About</a><a href="#work">Work</a><a href="#stack">Stack</a><a href="#contact">Contact</a></div>
+</div></nav>
+
+<!-- ceiling cord: pull it anywhere on the page -->
+<svg class="cord pull" viewBox="0 0 30 170" aria-hidden="false">
+  <line x1="15" y1="0" x2="15" y2="120"/>
+  <g role="button" tabindex="0" aria-label="Pull the cord to switch between light and dark mode">
+    <rect class="hit" x="0" y="102" width="30" height="36"/>
+    <circle class="bead" cx="15" cy="120" r="7"/>
+  </g>
+</svg>
+
+<header class="hero" id="top">
+  <canvas id="csi" aria-label="Animated Wi-Fi signal: moving the pointer disturbs the subcarriers like a person walking through a room"></canvas>
+  <div class="hint mono">// move through the room · click to ping · pull the cord for lights ↗</div>
+  <div class="hud" id="hud" aria-hidden="true">
+    <div><i class="dot"></i>Presence <b id="pres">scanning…</b></div>
+    <div>Motion <span class="bar"><i id="mbar"></i></span><b id="mot">0.00</b></div>
+  </div>
+
+  <div class="hero-copy"><div class="wrap">
+    <h1 aria-label="Blesson Joseph Byju"><span class="scr">Blesson</span><br><span class="scr">Joseph</span> <em class="scr">Byju</em></h1>
+    <p class="lede">Developer who builds systems that sense the physical world, run in containers, and say honestly what they can and can't do.</p>
+  </div></div>
+</header>
+
+<div class="marquee" aria-hidden="true"><div>
+  <span>React</span><span>FastAPI</span><span>ESP32-S3</span><span>Docker</span><span>Kubernetes</span><span>Wi-Fi CSI</span><span>MongoDB</span><span>PostgreSQL</span><span>Machine learning</span>
+  <span>React</span><span>FastAPI</span><span>ESP32-S3</span><span>Docker</span><span>Kubernetes</span><span>Wi-Fi CSI</span><span>MongoDB</span><span>PostgreSQL</span><span>Machine learning</span>
+</div></div>
+
+<section class="about" id="about"><div class="wrap">
+  <div class="head"><span class="mono">01 / About</span><span></span></div>
+  <p id="fill">I'm an MCA student at Amal Jyothi College of Engineering. I like the space where <span class="hl">hardware, data and the web</span> meet — flashing firmware onto an ESP32 in the morning, training a model after lunch, and shipping the dashboard by night. I care about tests, clean deploys, and <span class="hl">numbers I can defend.</span></p>
+</div></section>
+
+<section id="work"><div class="wrap">
+  <div class="head"><span class="mono">02 / Selected work</span><h2>Things I've <em>built</em></h2></div>
+
+  <article class="proj reveal">
+    <div><span class="mono">2026 · MCA project</span><span class="idx">01</span></div>
+    <div class="body">
+      <h3>Wi-Fi Sense</h3>
+      <div class="sub">AI-powered indoor monitoring using Wi-Fi Channel State Information — no cameras, no wearables.</div>
+      <canvas class="viz" id="spec" aria-label="Animated spectrogram of Wi-Fi subcarrier amplitudes over time"></canvas>
+      <p>A multi-tenant platform where one codebase serves elder-care homes (caregivers, doctors, families tracking resident safety and alerts) and corporate buildings (live room occupancy and booking).</p>
+      <p>Two ESP32-S3 boards running custom ESP-IDF firmware form the sensing link; a Python serial bridge streams CSI to an authenticated ingest API. A React 19 frontend talks to a FastAPI backend with JWT auth and rotating refresh tokens. Every value on screen is labelled with its source — demo, dataset replay, or live hardware.</p>
+      <div class="stats">
+        <div class="stat"><b data-n="89">~89</b><span class="mono">CSI packets / sec</span></div>
+        <div class="stat"><b data-n="348">348</b><span class="mono">backend checks</span></div>
+        <div class="stat"><b data-n="23">23</b><span class="mono">frontend tests</span></div>
+        <div class="stat"><b data-n="38">38</b><span class="mono">Selenium E2E tests</span></div>
+      </div>
+      <div class="note"><span class="mono">Honest result</span>The random-forest fall model reaches ~0.69 balanced accuracy on unseen people and confuses sitting with falling — so the system only raises a <em>possible</em> fall for a caregiver to verify, and live boards report presence and motion instead.</div>
+      <div class="tags"><span>React 19</span><span>Vite</span><span>Tailwind</span><span>FastAPI</span><span>SQLModel</span><span>Alembic</span><span>PostgreSQL</span><span>JWT</span><span>ESP32-S3</span><span>ESP-IDF</span><span>scikit-learn</span><span>Selenium</span></div>
+      <a class="repo" href="https://github.com/Blessonjoseph07/WIFISENSE" target="_blank" rel="noopener">View code on GitHub ↗</a>
+    </div>
+  </article>
+
+  <article class="proj reveal">
+    <div><span class="mono">2026 · Containerised app</span><span class="idx">02</span></div>
+    <div class="body">
+      <h3>SkillTree</h3>
+      <div class="sub">Track what you're learning as a game-style radial skill tree.</div>
+      <svg class="viz tree" id="tree" viewBox="-300 -160 600 320" role="img" aria-label="Radial skill tree with five branches: Code, Cloud, Data, Mind, Design"></svg>
+      <p>Each skill is a node on a dot-matrix map with a branch, level, progress and status. Fully containerised: three services on a private bridge network, with only the UI port exposed to the host. The API runs as a non-root user with a healthcheck; MongoDB persists to a named volume. Ships with Kubernetes manifests too.</p>
+<pre class="arch">Browser :8080
+   │
+<i>skilltree-ui</i>   nginx · static UI · proxies /api
+   │
+<i>skilltree-api</i>  node 20 · express REST · validation
+   │
+<i>skilltree-db</i>   mongo 7 · volume "skill-data"</pre>
+      <div class="tags"><span>Docker</span><span>Compose</span><span>Kubernetes</span><span>Nginx</span><span>Node.js</span><span>Express</span><span>MongoDB</span><span>Vanilla JS</span></div>
+      <a class="repo" href="https://github.com/Blessonjoseph07/skilltree-docker" target="_blank" rel="noopener">View code on GitHub ↗</a>
+    </div>
+  </article>
+
+  <div class="more">
+    <div class="more-head"><span class="mono">Also built</span><a class="mono" href="https://github.com/Blessonjoseph07" target="_blank" rel="noopener">All repos ↗</a></div>
+    <a class="row" href="https://github.com/Blessonjoseph07/loanlens" target="_blank" rel="noopener">
+      <h4>LoanLens</h4><p>Loan approval prediction with Random Forest and SHAP, explained through a local RAG pipeline.</p><span class="mono">Python · FAISS · Ollama · Streamlit</span><i>↗</i></a>
+    <a class="row" href="https://github.com/Blessonjoseph07/AuraERP" target="_blank" rel="noopener">
+      <h4>AuraERP</h4><p>ERP web app for small businesses: inventory, employees, sales and finance, with an AI assistant.</p><span class="mono">React · FastAPI · PostgreSQL · Docker</span><i>↗</i></a>
+    <a class="row" href="https://github.com/Blessonjoseph07/FedGuard" target="_blank" rel="noopener">
+      <h4>FedGuard</h4><p>Federated learning platform with differential privacy and secure model aggregation.</p><span class="mono">Federated learning · Privacy</span><i>↗</i></a>
+    <a class="row" href="https://github.com/Blessonjoseph07/subscription-emulator" target="_blank" rel="noopener">
+      <h4>Subscription Emulator</h4><p>Simulates subscription lifecycles and shows usage against waste.</p><span class="mono">Django · MySQL</span><i>↗</i></a>
+    <a class="row" href="https://github.com/Blessonjoseph07/Student-Task-Manager-Android-app" target="_blank" rel="noopener">
+      <h4>Student Task Manager</h4><p>Android app for keeping track of student tasks.</p><span class="mono">Java · Android</span><i>↗</i></a>
+  </div>
+</div></section>
+
+<section id="stack"><div class="wrap">
+  <div class="head"><span class="mono">03 / Toolkit</span><h2>What I <em>work with</em></h2></div>
+  <div class="stack reveal">
+    <div><span class="mono">A</span><h4>Frontend</h4><ul><li>React · Vite</li><li>Tailwind CSS</li><li>HTML · CSS · JS</li></ul></div>
+    <div><span class="mono">B</span><h4>Backend</h4><ul><li>Java · Python</li><li>FastAPI</li><li>Node · Express</li><li>PostgreSQL · MongoDB</li><li>JWT auth</li></ul></div>
+    <div><span class="mono">C</span><h4>DevOps</h4><ul><li>Docker · Compose</li><li>Kubernetes</li><li>Nginx</li><li>Git</li></ul></div>
+    <div><span class="mono">D</span><h4>Data &amp; IoT</h4><ul><li>ESP32-S3 · ESP-IDF</li><li>Wi-Fi CSI</li><li>scikit-learn</li><li>Selenium · pytest</li></ul></div>
+  </div>
+</div></section>
+
+<section id="edu"><div class="wrap">
+  <div class="head"><span class="mono">04 / Education</span><h2>Where I <em>learn</em></h2></div>
+  <div class="edu reveal">
+    <span class="mono">2025 — 2027</span>
+    <div><h3>Master of Computer Applications</h3><div style="color:var(--mute)">Amal Jyothi College of Engineering (Autonomous), Kanjirappally, Kerala</div></div>
+    <span class="mono">In progress</span>
+  </div>
+</div></section>
+
+<section class="contact" id="contact"><div class="wrap">
+  <span class="mono">05 / Contact</span>
+  <div class="contact-top" style="margin-top:28px">
+    <h2>Let's build<br>something —<br><a class="mag" href="mailto:you@example.com">say hello.</a></h2>
+    <a class="badge" href="https://www.linkedin.com/in/blesson-joseph-byju07/" aria-label="Open to work — LinkedIn">
+      <svg viewBox="0 0 150 150" aria-hidden="true">
+        <defs><path id="circ" d="M75 75 m-58 0 a58 58 0 1 1 116 0 a58 58 0 1 1 -116 0"/></defs>
+        <text><textPath href="#circ">OPEN TO WORK · MCA 2027 · KERALA · </textPath></text>
+      </svg>
+      <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+  <div class="socials">
+    <a href="https://github.com/Blessonjoseph07" target="_blank" rel="noopener">GitHub ↗</a>
+    <a href="https://www.linkedin.com/in/blesson-joseph-byju07/" target="_blank" rel="noopener">LinkedIn ↗</a>
+    <a href="resume.pdf">Résumé ↗</a>
+  </div>
+</div>
+  <div class="logos" aria-label="Skills"><div id="logos"></div></div>
+  <div class="giant" aria-hidden="true">Blesson</div>
+  <div class="wrap"><footer class="mono"><span>© 2026 Blesson Joseph Byju</span><span>Built by hand · no frameworks</span></footer></div>
+</section>
+
+<script>
+const root = document.documentElement;
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+let C = {};
+function readColors(){
+  const s = getComputedStyle(root), g = k => s.getPropertyValue(k).trim();
+  C = { ink: g('--ink-rgb'), sig: g('--sig-rgb'), panel: g('--panel'), mute: g('--mute') };
+}
+readColors();
+
+// ---------- theme: lamp on = light mode, with a circular reveal from the pull point ----------
+function toggleTheme(x, y){
+  const apply = () => {
+    root.dataset.theme = root.dataset.theme === 'light' ? 'dark' : 'light';
+    try { localStorage.theme = root.dataset.theme } catch(e){}
+    readColors();
+  };
+  if (!document.startViewTransition || reduce) return apply();
+  document.startViewTransition(apply).ready.then(() => {
+    const r = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
+    root.animate({ clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${r}px at ${x}px ${y}px)`] },
+      { duration: 750, easing: 'cubic-bezier(.7,0,.2,1)', pseudoElement: '::view-transition-new(root)' });
+  }).catch(() => {}); // transition skipped (e.g. tab hidden): the theme still changed
+}
+
+// A pull chain: drag the bead down past a threshold (or click / Enter) and it springs back.
+function makePull(svg){
+  const line = svg.querySelector('line'), g = svg.querySelector('g[role=button]');
+  const bead = g.querySelector('.bead'), y0 = +line.getAttribute('y2');
+  let dy = 0, vel = 0, start = 0, dragging = false, raf = 0;
+  const set = d => { dy = d; line.setAttribute('y2', y0 + d); g.setAttribute('transform', `translate(0 ${d})`); };
+  const fire = () => { const b = bead.getBoundingClientRect(); toggleTheme(b.left + b.width / 2, b.top + b.height / 2); };
+  const spring = () => { // damped spring back to rest, so the chain bounces
+    cancelAnimationFrame(raf);
+    (function step(){ vel = (vel - dy * 0.18) * 0.8; set(dy + vel); if (Math.abs(dy) + Math.abs(vel) > 0.2) raf = requestAnimationFrame(step); else set(0); })();
+  };
+  const unit = () => 1 / svg.getScreenCTM().d; // screen px → svg units
+  g.addEventListener('pointerdown', e => { dragging = true; start = e.clientY; cancelAnimationFrame(raf); g.setPointerCapture(e.pointerId); e.preventDefault(); });
+  g.addEventListener('pointermove', e => { if (dragging) set(Math.max(0, Math.min(70, (e.clientY - start) * unit()))); });
+  g.addEventListener('pointerup', () => {
+    if (!dragging) return; dragging = false;
+    if (dy > 26 || dy < 3) { if (dy < 3) set(34); fire(); } // a plain click counts as a tug
+    vel = 0; spring();
+  });
+  g.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); set(34); fire(); vel = 0; spring(); } });
+}
+document.querySelectorAll('.pull').forEach(makePull);
+
+// The cord swings like a pendulum when the mouse brushes past it.
+const cord = document.querySelector('.cord');
+let ang = 0, angV = 0, lastX = null, swinging = false;
+function swing(){
+  angV = (angV - ang * 0.02) * 0.96; // spring toward hanging straight, with damping
+  ang += angV;
+  cord.style.transform = `rotate(${ang}deg)`;
+  if (Math.abs(ang) + Math.abs(angV) > 0.02) requestAnimationFrame(swing);
+  else { swinging = false; ang = angV = 0; cord.style.transform = ''; }
+}
+if (!reduce) addEventListener('pointermove', e => {
+  const dx = lastX === null ? 0 : e.clientX - lastX; lastX = e.clientX;
+  const r = cord.getBoundingClientRect(), ax = r.left + r.width / 2;
+  // only when the pointer passes through the cord's reach (its length plus a little slack)
+  if (Math.abs(e.clientX - ax) > 50 || e.clientY < r.top || e.clientY > r.bottom + 20) return;
+  angV -= Math.max(-6, Math.min(6, dx * 0.12)) * (1 - Math.abs(e.clientX - ax) / 60); // pushed away from the mouse's direction
+  angV = Math.max(-5, Math.min(5, angV));
+  if (!swinging) { swinging = true; requestAnimationFrame(swing); }
+}, { passive: true });
+
+// ---------- skill logos (Devicon), duplicated so the loop is seamless ----------
+const skills = [['java','Java'],['python','Python'],['c','C'],['javascript','JavaScript'],['react','React'],['nodejs','Node.js'],
+  ['express','Express',1],['html5','HTML'],['css3','CSS'],['tailwindcss','Tailwind'],['fastapi','FastAPI'],['mongodb','MongoDB'],
+  ['postgresql','PostgreSQL'],['mysql','MySQL'],['docker','Docker'],['kubernetes','Kubernetes'],['nginx','Nginx'],['git','Git'],
+  ['github','GitHub',1],['linux','Linux'],['vscode','VS Code'],['django','Django',1,'plain'],['android','Android']];
+const logoRow = skills.map(([id, name, dark, kind = 'original']) =>
+  `<span><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/${id}/${id}-${kind}.svg" alt="" loading="lazy"${dark ? ' class="mono-ico"' : ''}>${name}</span>`).join('');
+document.getElementById('logos').innerHTML = logoRow + `<span aria-hidden="true" style="display:contents">${logoRow}</span>`;
+
+// ---------- presence sensing: the visitor is the "person in the room" ----------
+const hud = document.getElementById('hud'), pres = document.getElementById('pres'), mot = document.getElementById('mot'), mbar = document.getElementById('mbar');
+const t0 = performance.now(), title = document.title;
+let lastMove = t0, away = false;
+addEventListener('pointermove', () => { lastMove = performance.now(); away = false; }, { passive: true });
+document.documentElement.addEventListener('mouseleave', () => { away = true; });
+// motion comes from the hero's own signal (mouse movement over the lines), not from scrolling
+setInterval(() => {
+  const now = performance.now();
+  const state = now - t0 < 1400 ? 'scanning…' : away ? 'stepped away' : now - lastMove > 12000 ? 'detected · still' : 'detected';
+  if (pres.textContent !== state) pres.textContent = state;
+  hud.classList.toggle('away', away);
+  mot.textContent = motion.toFixed(2);
+  mbar.style.width = motion * 100 + '%';
+}, 100);
+// leaving the tab = presence lost
+document.addEventListener('visibilitychange', () => { document.title = document.hidden ? '● Presence lost — come back' : title; });
+
+// a hello for anyone who opens dev tools
+console.log('%cPresence detected in the console 👀', 'font:600 16px monospace;color:#c8ff4d;background:#0b0c0a;padding:8px 12px');
+console.log('Curious how this works? It\'s one hand-written HTML file. Let\'s talk → https://www.linkedin.com/in/blesson-joseph-byju07/');
+
+// ---------- local clock ----------
+const clock = document.getElementById('clock');
+const tick = () => clock.textContent = 'Kerala · ' + new Date().toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' }) + ' IST';
+tick(); setInterval(tick, 10000);
+
+// ---------- hero: stacked CSI subcarrier lines; the pointer is a person in the room ----------
+const cv = document.getElementById('csi'), cx = cv.getContext('2d');
+const N = 52;
+let W, H, dpr, t = 0, mx = -1e4, my = -1e4, px = mx, py = my, motion = 0, energy = 0;
+const pings = [];
+function size(){
+  dpr = Math.min(devicePixelRatio || 1, 2);
+  W = cv.clientWidth; H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
+}
+addEventListener('resize', size); size();
+cv.addEventListener('pointermove', e => { const r = cv.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; });
+cv.addEventListener('pointerleave', () => { mx = my = -1e4; });
+cv.addEventListener('pointerdown', e => { const r = cv.getBoundingClientRect(); pings.push({ x: e.clientX - r.left, y: e.clientY - r.top, r: 0 }); });
+
+function frame(){
+  t += 0.012;
+  const speed = Math.hypot(mx - px, my - py); px = mx; py = my;
+  motion += ((mx < 0 ? 0 : Math.min(speed / 40, 1)) - motion) * 0.08;
+  energy += ((mx < 0 ? 0 : 1) - energy) * 0.04;
+  for (const p of pings) p.r += 9;
+  while (pings.length && pings[0].r > Math.max(W, H)) pings.shift();
+
+  cx.clearRect(0, 0, W, H);
+  const top = H * 0.08, gap = (H * 0.55) / N;
+  for (let i = 0; i < N; i++){
+    const y0 = top + i * gap;
+    const hot = Math.exp(-((y0 - my) ** 2) / (2 * 90 ** 2)) * energy;
+    cx.beginPath();
+    for (let x = 0; x <= W; x += 6){
+      const d = Math.exp(-((x - mx) ** 2) / (2 * 140 ** 2)) * hot;
+      const base = Math.sin(x * 0.006 + i * 0.35 + t) * 4 + Math.sin(x * 0.017 - t * 1.7 + i) * 2;
+      let dist = d * (18 + motion * 40) * Math.sin(x * 0.05 - t * 9 + i * 0.6);
+      for (const p of pings){
+        const k = Math.hypot(x - p.x, y0 - p.y) - p.r;
+        dist += Math.exp(-k * k / 600) * 22 * (1 - p.r / Math.max(W, H)) * Math.sin(k * 0.2);
+      }
+      x ? cx.lineTo(x, y0 + base + dist) : cx.moveTo(x, y0 + base + dist);
+    }
+    const a = 0.12 + hot * 0.75;
+    cx.strokeStyle = `rgba(${hot > 0.25 ? C.sig : C.ink},${a})`;
+    cx.lineWidth = 1;
+    cx.stroke();
+  }
+  if (!reduce) requestAnimationFrame(frame);
+}
+frame();
+if (reduce) addEventListener('resize', frame);
+
+// ---------- name "decodes" out of noise ----------
+const glyphs = '01#%&*+=<>/\\|~';
+if (!reduce) document.querySelectorAll('.scr').forEach((el, n) => {
+  const txt = el.textContent; let f = 0;
+  const id = setInterval(() => {
+    el.textContent = [...txt].map((c, i) => i < f / 3 - n * 2 ? c : glyphs[Math.random() * glyphs.length | 0]).join('');
+    if (++f > (txt.length + n * 2) * 3) { el.textContent = txt; clearInterval(id); }
+  }, 40);
+});
+
+// ---------- about: words light up as you scroll ----------
+const fill = document.getElementById('fill');
+fill.innerHTML = [...fill.childNodes].map(n => {
+  const hl = n.nodeType === 1;
+  return n.textContent.split(/(\s+)/).map(w => w.trim() ? `<span class="w${hl ? ' hl' : ''}">${w}</span>` : w).join('');
+}).join('');
+const words = fill.querySelectorAll('.w');
+function fillWords(){
+  const r = fill.getBoundingClientRect();
+  const p = reduce ? 1 : Math.min(1, Math.max(0, (innerHeight * 0.85 - r.top) / (r.height + innerHeight * 0.35)));
+  const lit = Math.round(p * words.length);
+  words.forEach((w, i) => w.classList.toggle('lit', i < lit));
+}
+addEventListener('scroll', fillWords, { passive: true }); fillWords();
+
+// ---------- scroll reveal ----------
+const io = new IntersectionObserver(es => es.forEach(e => e.isIntersecting && (e.target.classList.add('in'), io.unobserve(e.target))), { threshold: .15 });
+document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+// ---------- Wi-Fi Sense: scrolling CSI spectrogram (time → x, subcarrier → y) ----------
+const sp = document.getElementById('spec'), sx = sp.getContext('2d');
+let st = 0;
+function spec(){
+  const w = sp.width = sp.clientWidth, h = sp.height = sp.clientHeight;
+  sx.fillStyle = C.panel; sx.fillRect(0, 0, w, h);
+  const cols = 90, rows = 26, cw = w / cols, ch = h / rows;
+  for (let c = 0; c < cols; c++){
+    const tt = st + c * 0.08;
+    const walk = Math.max(0, Math.sin(tt * 0.6)) ** 3; // someone walks through now and then
+    for (let r = 0; r < rows; r++){
+      const v = 0.25 + 0.15 * Math.sin(r * 0.5 + tt) + walk * 0.6 * Math.abs(Math.sin(r * 0.9 + tt * 4));
+      sx.fillStyle = `rgba(${C.sig},${Math.min(v, 1) * 0.85})`;
+      sx.fillRect(c * cw, r * ch, cw - 1, ch - 1);
+    }
+  }
+  sx.fillStyle = C.mute; sx.font = '10px JetBrains Mono, monospace';
+  sx.fillText('SUBCARRIER × TIME', 10, h - 10);
+  st += 0.03;
+  if (!reduce) requestAnimationFrame(spec);
+}
+spec();
+
+// ---------- SkillTree: radial tree with five branches ----------
+const branches = [['CODE', 5], ['CLOUD', 4], ['DATA', 4], ['MIND', 3], ['DESIGN', 3]];
+let svg = '';
+for (let i = 0; i <= 60; i++) for (let j = 0; j <= 30; j++) svg += `<circle class="dot" cx="${-300 + i * 10}" cy="${-160 + j * 10.6}" r=".6"/>`;
+branches.forEach(([name, n], b) => {
+  const a = -Math.PI / 2 + b * 2 * Math.PI / branches.length;
+  svg += `<line x1="0" y1="0" x2="${Math.cos(a) * 38 * n * 1.1}" y2="${Math.sin(a) * 38 * n * .55}"/>`;
+  for (let k = 1; k <= n; k++){
+    const done = k <= n - 2;
+    svg += `<circle class="${done ? 'done' : 'todo'}" cx="${Math.cos(a) * 38 * k * 1.1}" cy="${Math.sin(a) * 38 * k * .55}" r="${done ? 5 : 4}"/>`;
+  }
+  svg += `<text x="${Math.cos(a) * 38 * (n + 1.6) * 1.1}" y="${Math.sin(a) * 38 * (n + 1.6) * .55 + 3}" text-anchor="middle">${name}</text>`;
+});
+svg += `<circle class="core" r="10"/><circle class="ring" r="18"><animate attributeName="r" values="12;26;12" dur="3s" repeatCount="indefinite"/></circle>`;
+document.getElementById('tree').innerHTML = svg;
+
+// ---------- stats count up when visible ----------
+const cio = new IntersectionObserver(es => es.forEach(e => {
+  if (!e.isIntersecting || reduce) return; cio.unobserve(e.target);
+  const b = e.target, end = +b.dataset.n, pre = b.textContent.startsWith('~') ? '~' : '', t0 = performance.now();
+  (function step(now){ const p = Math.min((now - t0) / 1400, 1); b.textContent = pre + Math.round(end * (1 - (1 - p) ** 3)); if (p < 1) requestAnimationFrame(step); })(t0);
+}), { threshold: .6 });
+document.querySelectorAll('[data-n]').forEach(el => cio.observe(el));
+
+// ---------- toolkit cards tilt toward the pointer ----------
+document.querySelectorAll('.stack div').forEach(el => {
+  el.addEventListener('pointermove', e => {
+    const r = el.getBoundingClientRect(), x = (e.clientX - r.left) / r.width - .5, y = (e.clientY - r.top) / r.height - .5;
+    el.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 10}deg)`;
+  });
+  el.addEventListener('pointerleave', () => { el.style.transform = ''; });
+});
+
+// ---------- contact link leans toward the pointer ----------
+const mag = document.querySelector('.mag');
+mag.addEventListener('pointermove', e => {
+  const r = mag.getBoundingClientRect();
+  mag.style.transform = `translate(${(e.clientX - r.left - r.width / 2) * .25}px,${(e.clientY - r.top - r.height / 2) * .35}px)`;
+});
+mag.addEventListener('pointerleave', () => { mag.style.transform = ''; });
+</script>
+</body>
+</html>
