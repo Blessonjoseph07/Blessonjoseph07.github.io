@@ -55,9 +55,9 @@
   .hero h1{font:400 clamp(56px,11vw,168px)/.88 var(--serif);letter-spacing:-.02em}
   .hero h1 em{color:var(--sig)}
   .hero p.lede{max-width:520px;margin-top:28px;font-size:19px;color:var(--soft)}
-  .hint{position:absolute;top:96px;left:28px;pointer-events:none}
   /* presence readout in the hero: the page "senses" the visitor */
-  .hud{position:absolute;top:124px;left:28px;font-family:var(--mono);font-size:12px;line-height:2.2;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);pointer-events:none}
+  .hero-top{position:absolute;top:96px;left:28px;right:64px;pointer-events:none}
+  .hud{margin-top:10px;font-family:var(--mono);font-size:12px;line-height:2.2;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);pointer-events:none}
   .hud div{display:flex;align-items:center;gap:10px}
   .hud b{color:var(--sig);font-weight:600}
   .hud .dot{width:7px;height:7px;border-radius:50%;background:var(--sig);animation:blip 1.6s ease-out infinite}
@@ -227,10 +227,12 @@
 
 <header class="hero" id="top">
   <canvas id="csi" aria-label="Animated Wi-Fi signal: moving the pointer disturbs the subcarriers like a person walking through a room"></canvas>
-  <div class="hint mono">// move through the room · click to ping · pull the cord for lights ↗</div>
-  <div class="hud" id="hud" aria-hidden="true">
-    <div><i class="dot"></i>Presence <b id="pres">scanning…</b></div>
-    <div>Motion <span class="bar"><i id="mbar"></i></span><b id="mot">0.00</b></div>
+  <div class="hero-top">
+    <div class="hint mono">// move through the room · click to ping · pull the cord for lights ↗</div>
+    <div class="hud" id="hud" aria-hidden="true">
+      <div><i class="dot"></i>Presence <b id="pres">scanning…</b></div>
+      <div>Motion <span class="bar"><i id="mbar"></i></span><b id="mot">0.00</b></div>
+    </div>
   </div>
 
   <div class="hero-copy"><div class="wrap">
